@@ -12,23 +12,27 @@
     <v-container fluid>
       <v-form ref="form">
         <v-text-field
-          v-model="email"
-          label="E-mail"
+          v-model="title"
+          label="Title"
+          required
+          append-icon="mdi-user"
+        ></v-text-field>
+        <v-text-field
+          v-model="description"
+          label="description"
           required
           append-icon="mdi-email"
         ></v-text-field>
-        <v-text-field
-          v-model="password"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPassword ? 'text' : 'password'"
-          label="Password"
-          counter
-          @click:append="showPassword = !showPassword"
-        ></v-text-field>
+        <v-file-input
+          value="photo"
+          accept="image/png, image/jpeg, image/bmp"
+          prepend-icon="mdi-camera"
+          label="Photo Profile"
+        ></v-file-input>
 
         <div class="text-xs-center">
-          <v-btn color="success lighten-1" @click="submit">
-            Login
+          <v-btn color="primary lighten-1" @click="submit">
+            Update
             <v-icon right dark>mdi-lock-open</v-icon>
           </v-btn>
         </div>
@@ -42,9 +46,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      name: "",
       email: "",
-      password: "",
-      showPassword: false,
+      photo: "",
       apiDomain: "https://demo-api-vue.sanbercloud.com",
     };
   },
@@ -56,26 +60,28 @@ export default {
   methods: {
     ...mapActions({
       setAlert: "alert/set",
-      setToken: "auth/setToken",
     }),
     close() {
       this.$emit("closed", false);
     },
     submit() {
+      let formData = new FormData();
+      formData.append("name", this.name);
+      formData.append("password", this.password);
+      formData.append("email", this.email);
       const config = {
         method: "post",
-        url: this.apiDomain + "/api/v2/auth/login",
+        url: this.apiDomain + "/api/v2/auth/register",
         data: {
-          email: this.email,
-          password: this.password,
+          formData,
+        },
+        header: {
+          Accept: "application/json",
         },
       };
-
       this.axios(config)
         .then((response) => {
-          this.setToken(response.data.access_token);
-
-          console.log(response.data);
+          console.log(response);
           this.setAlert({
             status: true,
             color: "success",
