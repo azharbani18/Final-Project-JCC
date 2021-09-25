@@ -50,57 +50,60 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 export default {
-    data() {
-        return {
-            email : '',
-            password : '',
-            showPassword : false,
-            apiDomain: 'https://demo-api-vue.sanbercloud.com'
-        }
+  data() {
+    return {
+      email: "",
+      password: "",
+      showPassword: false,
+      apiDomain: "https://demo-api-vue.sanbercloud.com",
+    };
+  },
+  computed: {
+    ...mapGetters({
+      title: "dialog/params",
+    }),
+  },
+  methods: {
+    ...mapActions({
+      setAlert: "alert/set",
+      setToken: "auth/setToken",
+    }),
+    close() {
+      this.$emit("closed", false);
     },
-    methods : {
-        ...mapActions({
-            setAlert : 'alert/set',
-            setToken : 'auth/setToken'
-        }),
-        close() {
-            this.$emit('closed', false)
+    submit() {
+      const config = {
+        method: "post",
+        url: this.apiDomain + "/api/v2/auth/login",
+        data: {
+          email: this.email,
+          password: this.password,
         },
-        submit() {
-            const config = {
-                method : 'post',
-                url: this.apiDomain + '/api/v2/auth/login',
-                data: {
-                    'email' : this.email,
-                    'password' : this.password
-                }
-            }
+      };
 
-            this.axios(config)
-                .then((response) => {
+      this.axios(config)
+        .then((response) => {
+          this.setToken(response.data.access_token);
 
-                    this.setToken(response.data.access_token)
-
-                    console.log(response.data)
-                    this.setAlert({
-                        status : true,
-                        color : 'success',
-                        text : 'Login Berhasil',
-                    })
-                    this.close()
-                })
-                .catch((response) => {
-                    console.log(response)
-                    this.setAlert({
-                        status : true,
-                        color : 'error',
-                        text : 'Login Gagal',
-                    })
-                })
-
-        }
+          console.log(response.data);
+          this.setAlert({
+            status: true,
+            color: "success",
+            text: "Login Berhasil",
+          });
+          this.close();
+        })
+        .catch((response) => {
+          console.log(response);
+          this.setAlert({
+            status: true,
+            color: "error",
+            text: "Login Gagal",
+          });
+        });
     },
-}
+  },
+};
 </script>

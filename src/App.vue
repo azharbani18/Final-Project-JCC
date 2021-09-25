@@ -1,14 +1,19 @@
 <template>
   <!-- App.vue -->
   <v-app>
-
-    <alert/>
+    <alert />
     <Dialog></Dialog>
     <v-navigation-drawer app v-model="drawer">
       <v-list>
-        <v-list-item v-if="!guest">
+        <!-- <v-list-item v-if="!guest">
           <v-list-item-avatar>
-            <v-img :src="user.photo_profile ? apiDomain + user.photo_profile : 'https://randomuser.me/api/portraits/men/42.jpg'"></v-img>
+            <v-img
+              :src="
+                user.photo_profile
+                  ? apiDomain + user.photo_profile
+                  : 'https://randomuser.me/api/portraits/men/42.jpg'
+              "
+            ></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ user.name }}</v-list-item-title>
@@ -24,7 +29,9 @@
             <v-icon left>mdi-account</v-icon>
             Register
           </v-btn>
-        </div>
+        </div> -->
+
+        <h1 class="text-center mt-1 mb-4">SanbercodeApp</h1>
 
         <v-divider></v-divider>
 
@@ -43,23 +50,68 @@
         </v-list-item>
       </v-list>
 
-      <template v-slot:append v-if="!guest">
+      <!-- <template v-slot:append v-if="!guest">
         <div class="pa-2">
           <v-btn block color="red" dark @click="logout">
             <v-icon left>mdi-lock</v-icon>
             Logout
           </v-btn>
         </div>
-      </template>
-
+      </template> -->
     </v-navigation-drawer>
 
     <v-app-bar app color="success" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>SanbercodeApp</v-toolbar-title>
-
       <v-spacer></v-spacer>
+
+      <div v-if="guest">
+        <v-btn text class="ma-2 white--text" @click="login">
+          Login
+        </v-btn>
+        <v-btn color="primary" class="ma-2 white--text" @click="register">
+          Register
+        </v-btn>
+      </div>
+
+      <v-menu bottom min-width="150px" rounded offset-y v-if="!guest">
+        <template v-slot:activator="{ on }">
+          <v-btn icon x-large v-on="on" class="mr-4">
+            <v-avatar color="brown" size="48">
+              <v-img
+                :src="
+                  user.photo_profile
+                    ? apiDomain + user.photo_profile
+                    : 'https://randomuser.me/api/portraits/men/42.jpg'
+                "
+              ></v-img>
+            </v-avatar>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-list-item-content class="justify-center">
+            <div class="mx-auto text-center">
+              <v-avatar color="brown">
+                <v-img
+                  :src="
+                    user.photo_profile
+                      ? apiDomain + user.photo_profile
+                      : 'https://randomuser.me/api/portraits/men/42.jpg'
+                  "
+                ></v-img>
+              </v-avatar>
+              <h3 class="px-1">{{ user.name }}</h3>
+              <p class="text-caption mt-1">
+                {{ user.email }}
+              </p>
+              <v-divider class="mb-2"></v-divider>
+              <v-btn text color="red" @click="logout">
+                Logout
+              </v-btn>
+            </div>
+          </v-list-item-content>
+        </v-card>
+      </v-menu>
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -78,79 +130,82 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'App',
-  components: { 
-    Alert : () => import('./components/Alert.vue'),
-    Dialog : () => import('./components/Dialog.vue')
+  name: "App",
+  components: {
+    Alert: () => import("./components/Alert.vue"),
+    Dialog: () => import("./components/Dialog.vue"),
   },
   data: () => ({
-    drawer : false,
-    menus : [
-      { title : 'Home', icon : 'mdi-home', route : '/' },
-      { title : 'Blogs', icon : 'mdi-note', route : '/blogs' },
+    drawer: false,
+    menus: [
+      { title: "Home", icon: "mdi-home", route: "/" },
+      { title: "Blogs", icon: "mdi-note", route: "/blogs" },
     ],
-    apiDomain : 'https://demo-api-vue.sanbercloud.com'
+    apiDomain: "https://demo-api-vue.sanbercloud.com",
   }),
-  computed : {
+  computed: {
     ...mapGetters({
-      guest : 'auth/guest',
-      user : 'auth/user',
-      token : 'auth/token'
-    })
+      guest: "auth/guest",
+      user: "auth/user",
+      token: "auth/token",
+    }),
   },
   methods: {
     ...mapActions({
-      checkToken : 'auth/checkToken',
-      setToken : 'auth/setToken',
-      setUser : 'auth/setUser'
+      checkToken: "auth/checkToken",
+      setToken: "auth/setToken",
+      setUser: "auth/setUser",
     }),
-    logout(){
-
+    logout() {
       let config = {
-        method : 'post',
-        url : this.apiDomain + '/api/v2/auth/logout',
-        headers : {
-          Authorization : 'Bearer ' + this.token,
-        }
-      }
+        method: "post",
+        url: this.apiDomain + "/api/v2/auth/logout",
+        headers: {
+          Authorization: "Bearer " + this.token,
+        },
+      };
 
       this.axios(config)
         .then(() => {
-          this.setToken('')
-          this.setUser({})
+          this.setToken("");
+          this.setUser({});
 
           this.setAlert({
-            status : true,
-            color : 'success',
-            text : 'Anda berhasil logout',
-          })
+            status: true,
+            color: "success",
+            text: "Anda berhasil logout",
+          });
         })
         .catch((responses) => {
           this.setAlert({
-            status : true,
-            color : 'error',
-            text : responses.data.error
-          })
-        })
+            status: true,
+            color: "error",
+            text: responses.data.error,
+          });
+        });
     },
     login() {
-      this.setDialogComponent({'component' : 'login'})
+      this.setDialogComponent({ component: "login", params: "Login" });
+    },
+    register() {
+      this.setDialogComponent({ component: "register", params: "Register" });
     },
     register() {
       this.setDialogComponent({'component' : 'register'})
     },
     ...mapActions({
-      setAlert : 'alert/set',
-      setDialogComponent : 'dialog/setComponent'
-    })
+      setAlert: "alert/set",
+      setDialogComponent: "dialog/setComponent",
+    }),
   },
   mounted() {
-    if(this.token) {
-      this.checkToken(this.token)
+    if (this.token) {
+      this.checkToken(this.token);
     }
-  }
+    console.log(this.$store.state);
+  },
 };
 </script>

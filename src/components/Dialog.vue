@@ -7,34 +7,34 @@
 </template>
 
 <script>
-
-import {mapGetters, mapActions} from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-    name : 'dialog',
-    components : {
-        Login : () => import('./Login.vue'),
-        Register : () => import('./Register.vue')
-    },
-    computed : {
-        ...mapGetters({
-            dialogStatus : 'dialog/status',
-            currentComponent : 'dialog/component'
-        }),
+  name: "dialog",
+  components: {
+    Login: () => import("./Login.vue"),
+    Register: () => import("./Register.vue"),
+    UpdateBlog: () => import("./UpdateBlog.vue"),
+  },
+  computed: {
+    ...mapGetters({
+      dialogStatus: "dialog/status",
+      currentComponent: "dialog/component",
+    }),
 
-        dialog: {
-            get() {
-                return this.dialogStatus
-            },
-            set (value) {
-                this.setDialogStatus(value)
-            }
-        }
+    dialog: {
+      get() {
+        return this.dialogStatus;
+      },
+      set(value) {
+        this.setDialogStatus(value);
+      },
     },
-    methods : {
-        ...mapActions({
-            setDialogStatus : 'dialog/setStatus'
-        })
-    }
-}
+  },
+  methods: {
+    ...mapActions({
+      setDialogStatus: "dialog/setStatus",
+    }),
+  },
+};
 </script>
