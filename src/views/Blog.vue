@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <v-card v-if="blog.id">
-      <v-img
-        :src="
-          blog.photo ? apiDomain + blog.photo : 'https://picsum.photos/200/300'
-        "
-        class="white--text"
-        height="200px"
-      >
-        <v-card-title
-          class="fill-height align-end"
-          v-text="blog.title"
-        ></v-card-title>
-      </v-img>
+    <div>
+        <v-card v-if="blog.id">
+            <v-img
+            :src="blog.photo ? apiDomain + blog.photo : 'https://picsum.photos/200/300'"
+            class="white--text"
+            height="500px"
+            >
+                <v-card-title
+                class="fill-height align-end"
+                v-text="blog.title"
+                ></v-card-title>
+            </v-img>
 
       <v-card-text>
         <v-simple-table dense>

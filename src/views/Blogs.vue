@@ -1,8 +1,15 @@
 <template>
   <v-container class="ma-0 pa-0" grid-list-sm>
-    <v-subheader>
-        All Blogs
+    <v-subheader class="mb-5">
+        <h2>All Blogs</h2>
+        <v-spacer></v-spacer>
+        <v-btn color="teal darken-1" outlined @click.prevent="addBlog">
+            <v-icon>mdi-plus</v-icon>
+             tambah blog
+        </v-btn>
     </v-subheader>
+    
+
 
     <v-layout wrap>
       <blog-item-component 
@@ -25,7 +32,7 @@
 
 <script>
 import BlogItemComponent from '../components/BlogItemComponent.vue'
-
+import { mapActions, mapGetters } from "vuex"
 export default {
     data : () => ({
         apiDomain : 'https://demo-api-vue.sanbercloud.com',
@@ -37,7 +44,22 @@ export default {
     components : {
         'blog-item-component' : BlogItemComponent
     },
+    computed: {
+        ...mapGetters({
+            guest : "auth/guest"
+        }),
+    },
     methods : {
+        ...mapActions ({
+            setAlert: "alert/set",
+            setDialogComponent: "dialog/setComponent",            
+        }),
+        addBlog : function(){
+            this.setDialogComponent({
+            component: "AddBlog",
+            params: "Tambah Blog",
+            })
+        },
         go(){
             const config = {
                 method : 'get',

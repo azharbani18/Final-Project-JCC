@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs6>
+  <v-flex sm6>
     <v-card :to="`/blog/${blog.id}`">
       <v-img
         :src="
