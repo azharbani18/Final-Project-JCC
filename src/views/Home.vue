@@ -1,6 +1,10 @@
 <template>
-  <v-container class="ma-0 pa-0" grid-list-sm>
-    <div class="text-right">
+  <v-container fullscreen class="ma-0 pa-0" grid-list-xl>
+    <div class="text-center">
+      <h2 class="mb-2">Selamat datang di Bloggs</h2>
+      <v-progress-linear color="teal lighten-4" height="7"></v-progress-linear>
+    </div>
+    <div class="text-right mt-5">
       <v-btn small text to="/blogs" class="blue--text">
         All Blogs <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
@@ -35,7 +39,7 @@ export default {
     go() {
       const config = {
         method : 'get',
-        url : this.apiDomain + '/api/v2/blog/random/4'
+        url : this.apiDomain + '/api/v2/blog/random/8'
       }
       
       this.axios(config)

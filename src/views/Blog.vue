@@ -4,7 +4,7 @@
             <v-img
             :src="blog.photo ? apiDomain + blog.photo : 'https://picsum.photos/200/300'"
             class="white--text"
-            height="200px"
+            height="500px"
             >
                 <v-card-title
                 class="fill-height align-end"

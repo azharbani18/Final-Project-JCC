@@ -5,33 +5,8 @@
     <Dialog></Dialog>
     <v-navigation-drawer app v-model="drawer">
       <v-list>
-        <!-- <v-list-item v-if="!guest">
-          <v-list-item-avatar>
-            <v-img
-              :src="
-                user.photo_profile
-                  ? apiDomain + user.photo_profile
-                  : 'https://randomuser.me/api/portraits/men/42.jpg'
-              "
-            ></v-img>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>{{ user.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
 
-        <div class="pa-2" v-if="guest">
-          <v-btn block color="primary" class="mb-1" @click="login">
-            <v-icon left>mdi-lock</v-icon>
-            Login
-          </v-btn>
-          <v-btn block color="success" class="mb-1" @click="register">
-            <v-icon left>mdi-account</v-icon>
-            Register
-          </v-btn>
-        </div> -->
-
-        <h1 class="text-center mt-1 mb-4">SanbercodeApp</h1>
+        <v-img src="./assets/logo_1.png"></v-img>
 
         <v-divider></v-divider>
 
@@ -49,27 +24,20 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-
-      <!-- <template v-slot:append v-if="!guest">
-        <div class="pa-2">
-          <v-btn block color="red" dark @click="logout">
-            <v-icon left>mdi-lock</v-icon>
-            Logout
-          </v-btn>
-        </div>
-      </template> -->
     </v-navigation-drawer>
 
-    <v-app-bar app color="success" dark>
+    <v-app-bar app color="teal darken-1" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
+      <v-toolbar-title color="primary">
+        BLOG APP
+      </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <div v-if="guest">
         <v-btn text class="ma-2 white--text" @click="login">
           Login
         </v-btn>
-        <v-btn color="primary" class="ma-2 white--text" @click="register">
+        <v-btn text class="ma-2 white--text" @click="register">
           Register
         </v-btn>
       </div>
@@ -139,7 +107,7 @@ export default {
     Dialog: () => import("./components/Dialog.vue"),
   },
   data: () => ({
-    drawer: false,
+    drawer: true,
     menus: [
       { title: "Home", icon: "mdi-home", route: "/" },
       { title: "Blogs", icon: "mdi-note", route: "/blogs" },
@@ -193,9 +161,7 @@ export default {
     register() {
       this.setDialogComponent({ component: "register", params: "Register" });
     },
-    register() {
-      this.setDialogComponent({'component' : 'register'})
-    },
+
     ...mapActions({
       setAlert: "alert/set",
       setDialogComponent: "dialog/setComponent",
