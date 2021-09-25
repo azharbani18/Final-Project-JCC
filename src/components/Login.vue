@@ -1,40 +1,52 @@
 <template>
-  <v-card>
-    <v-toolbar dark color="success">
-      <v-btn icon dark @click.native="close">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-    </v-toolbar>
+    <v-card>
+        <v-container fluid>
+            <h2
+                class="text-center"
+            >LOGIN</h2>
+            <h4
+                class="text-center  grey--text mb-5"
+            >Log in to your account so you can manage all of the blogs</h4>
+            <v-divider class="mb-5"></v-divider>
+            <v-form ref="form">
+                <h4 class="ml-1 mb-3">Email</h4>
+                <v-text-field
+                    v-model="email"
+                    label="Email"
+                    color="teal darken-1"
+                    required
+                    outlined
+                    rounded
+                    append-icon="mdi-email"
+                ></v-text-field>
+                <h4 class="ml-1 mb-3">Password</h4>
+                <v-text-field
+                    v-model = "password"
+                    color="teal darken-1"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showPassword? 'text' : 'password'"
+                    label="Password"
+                    counter
+                    outlined
+                    rounded
+                    @click:append="showPassword = !showPassword"
+                ></v-text-field>
 
-    <v-divider></v-divider>
-
-    <v-container fluid>
-      <v-form ref="form">
-        <v-text-field
-          v-model="email"
-          label="E-mail"
-          required
-          append-icon="mdi-email"
-        ></v-text-field>
-        <v-text-field
-          v-model="password"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPassword ? 'text' : 'password'"
-          label="Password"
-          counter
-          @click:append="showPassword = !showPassword"
-        ></v-text-field>
-
-        <div class="text-xs-center">
-          <v-btn color="success lighten-1" @click="submit">
-            Login
-            <v-icon right dark>mdi-lock-open</v-icon>
-          </v-btn>
-        </div>
-      </v-form>
-    </v-container>
-  </v-card>
+                <div class="text-center mb-5">
+                    <v-btn 
+                        color="teal darken-1"
+                        dark
+                        block
+                        rounded
+                        @click="submit"
+                    >
+                    Login
+                    <v-icon right dark>mdi-lock-open</v-icon>
+                    </v-btn>
+                </div>
+            </v-form>
+        </v-container>
+    </v-card>
 </template>
 
 <script>

@@ -25,7 +25,7 @@
             <v-icon left>mdi-lock</v-icon>
             Login
           </v-btn>
-          <v-btn block color="success">
+          <v-btn block color="success" class="mb-1" @click="register">
             <v-icon left>mdi-account</v-icon>
             Register
           </v-btn>
@@ -192,6 +192,9 @@ export default {
     },
     register() {
       this.setDialogComponent({ component: "register", params: "Register" });
+    },
+    register() {
+      this.setDialogComponent({'component' : 'register'})
     },
     ...mapActions({
       setAlert: "alert/set",

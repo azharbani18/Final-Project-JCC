@@ -1,15 +1,9 @@
 <template>
-  <keep-alive>
-    <v-dialog
-      width="500"
-      v-model="dialog"
-      hide-overlay
-      persistent
-      transition="dialog-bottom-transition"
-    >
-      <component :is="currentComponent" @closed="setDialogStatus"></component>
-    </v-dialog>
-  </keep-alive>
+    <keep-alive>
+        <v-dialog v-model="dialog" max-width="600px" transition="dialog-top-transition">
+            <component :is="currentComponent" @closed="setDialogStatus"></component>
+        </v-dialog>
+    </keep-alive>
 </template>
 
 <script>
