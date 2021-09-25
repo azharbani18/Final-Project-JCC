@@ -161,7 +161,6 @@ export default {
     register() {
       this.setDialogComponent({ component: "register", params: "Register" });
     },
-
     ...mapActions({
       setAlert: "alert/set",
       setDialogComponent: "dialog/setComponent",
