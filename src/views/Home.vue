@@ -1,5 +1,5 @@
 <template>
-  <v-container fullscreen class="ma-0 pa-0" grid-list-xl>
+  <v-container fullscreen  grid-list-xl>
     <div class="text-center">
       <h2 class="mb-2">Selamat datang di Bloggs</h2>
       <v-progress-linear color="teal lighten-4" height="7"></v-progress-linear>

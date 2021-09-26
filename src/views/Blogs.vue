@@ -1,16 +1,14 @@
 <template>
-  <v-container class="ma-0 pa-0" grid-list-sm>
+  <v-container grid-list-xl>
     <v-subheader class="mb-5">
         <h2>All Blogs</h2>
         <v-spacer></v-spacer>
-        <v-btn color="teal darken-1" outlined @click.prevent="addBlog">
+        <v-btn color="teal darken-1" outlined @click.prevent="addBlog" v-if="!guest">
             <v-icon>mdi-plus</v-icon>
              tambah blog
         </v-btn>
     </v-subheader>
     
-
-
     <v-layout wrap>
       <blog-item-component 
         v-for="blog in blogs" 

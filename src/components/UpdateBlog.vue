@@ -1,34 +1,42 @@
 <template>
   <v-card>
-    <v-toolbar dark color="success">
-      <v-btn icon dark @click.native="close">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <v-toolbar-title>{{ titleForm }}</v-toolbar-title>
-    </v-toolbar>
-
+    <h2 class="text-center mb-3 pt-2">Edit Blog {{ blog.title }}</h2>
     <v-divider></v-divider>
 
     <v-container fluid>
       <v-form ref="form">
-        <v-text-field
-          v-model="blog.title"
-          label="Title"
-          required
-          append-icon="mdi-user"
-        ></v-text-field>
-        <v-text-field
+        <h4 class="ml-1 mb-3">Judul Blog</h4>
+          <v-text-field
+            v-model="blog.title"
+            label="Judul"
+            color="teal darken-1"
+            required
+            outlined
+            rounded
+            :counter="30"
+            :rules="titleRules"
+            append-icon="mdi-subtitles"
+          ></v-text-field>
+        
+        <h4 class="ml-1 mb-3">Deskripsi Blog</h4>
+        <v-textarea
+          outlined
+          rounded
+          color="teal darken-1"
+          name="input-7-4"
+          label="Deskripsi"
+          :counter="500"
+          :rules="descriptionRules"
           v-model="blog.description"
-          label="description"
-          required
-          append-icon="mdi-email"
-        ></v-text-field>
-        <input type="file" ref="photo" class="mt-3" />
+          append-icon="mdi-subtitles"
+        ></v-textarea>
+        
+        <h4 class="mb-3">Pilih Foto</h4>
+        <input type="file" ref="photo" class="mb-5" />
 
-        <div class="text-xs-center">
-          <v-btn color="primary lighten-1" @click="submit">
-            Update
-            <v-icon right dark>mdi-lock-open</v-icon>
+        <div class="text-xs-center mb-3">
+          <v-btn block rounded dark color="teal darken-1" @click="submit">
+            Update Blog
           </v-btn>
         </div>
       </v-form>
@@ -41,7 +49,16 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      errors:[],
       blog: {},
+      titleRules: [
+        v => !!v || 'Title is required',
+        v => (v && v.length <= 30) || 'Title must be less than 30 characters',
+      ],
+      descriptionRules: [
+        v => !!v || 'Description is required',
+        v => (v && v.length <= 500) || 'Description must be less than 500 characters',
+      ],
       apiDomain: "https://demo-api-vue.sanbercloud.com",
     };
   },
@@ -59,8 +76,12 @@ export default {
       setAlert: "alert/set",
       setStatus: "dialog/setStatus",
     }),
+    clear() {
+
+    },
     go() {
       let { id } = this.$route.params;
+      console.log(id)
 
       const config = {
         method: "get",
@@ -80,42 +101,62 @@ export default {
     close() {
       this.$emit("closed", false);
     },
-    submit() {
-      let formData = new FormData();
-      formData.append("title", this.blog.title);
-      formData.append("description", this.blog.description);
-      const config = {
-        method: "post",
-        url: `${this.apiDomain}/api/v2/blog/${this.blog.id}?_method=PUT`,
-        data: formData,
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + this.token,
-        },
-      };
-      this.axios(config)
-        .then(() => {
-          if (this.$refs.photo.files[0] != undefined) {
-            this.uploadPhoto();
-          }
-          this.setAlert({
-            status: true,
-            color: "success",
-            text: "Edit Berhasil",
-          });
-          this.setStatus(false);
-          this.$router.go();
-        })
-        .catch((response) => {
-          console.log(response);
-          this.setAlert({
-            status: true,
-            color: "error",
-            text: "Edit Gagal",
-          });
-        });
-      this.uploadPhoto();
+    validateData() {
+      this.errors = []
+
+      if(!this.blog.title || !this.blog.description){
+        this.errors.push("1")
+      }
+
+      if(this.blog.title.length > 30) {
+        this.errors.push("2")
+      }
+
+      if(this.blog.description.length > 500) {
+        this.errors.push("3")
+      }
     },
+    submit() {
+      this.validateData()
+      
+      if(this.errors.length === 0) {
+        let formData = new FormData();
+        formData.append("title", this.blog.title);
+        formData.append("description", this.blog.description);
+        const config = {
+          method: "post",
+          url: `${this.apiDomain}/api/v2/blog/${this.blog.id}?_method=PUT`,
+          data: formData,
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + this.token,
+          },
+        };
+        this.axios(config)
+          .then(() => {
+            if (this.$refs.photo.files[0] != undefined) {
+              this.uploadPhoto();
+            }
+            this.setAlert({
+              status: true,
+              color: "success",
+              text: "Edit Berhasil",
+            });
+            this.setStatus(false);
+            this.$router.go();
+          })
+          .catch((response) => {
+            console.log(response);
+            this.setAlert({
+              status: true,
+              color: "error",
+              text: "Edit Gagal",
+            });
+          });
+        this.uploadPhoto();
+      }
+    },
+
     uploadPhoto() {
       let photo = this.$refs.photo.files[0];
       let formData = new FormData();

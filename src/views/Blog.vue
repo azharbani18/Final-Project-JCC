@@ -1,10 +1,13 @@
 <template>
     <div>
+        <div class="mb-2 ml-1">
+          <span>Blog/</span><span><b>{{ blog.id }}</b></span>
+        </div>
         <v-card v-if="blog.id">
             <v-img
             :src="blog.photo ? apiDomain + blog.photo : 'https://picsum.photos/200/300'"
             class="white--text"
-            height="500px"
+            height="350px"
             >
                 <v-card-title
                 class="fill-height align-end"
@@ -86,36 +89,40 @@ export default {
         });
     },
     deleteBlog: function(id) {
-      const config = {
-        method: "post",
-        url: `${this.apiDomain}/api/v2/blog/${id}?_method=DELETE`,
-        headers: {
-          Authorization: "Bearer " + this.token,
-        },
-      };
 
-      this.axios(config)
-        .then(() => {
-          this.setAlert({
-            status: true,
-            color: "success",
-            text: "Delete Berhasil",
+      if(confirm("Yakin ingin menghapus blog ini?") === true) {
+        const config = {
+          method: "post",
+          url: `${this.apiDomain}/api/v2/blog/${id}?_method=DELETE`,
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        };
+
+        this.axios(config)
+          .then(() => {
+            this.setAlert({
+              status: true,
+              color: "success",
+              text: "Delete Berhasil",
+            });
+            this.$router.push({ path: "/blogs" });
+          })
+          .catch((response) => {
+            console.log(response);
+            this.setAlert({
+              status: true,
+              color: "error",
+              text: "Delete Gagal",
+            });
           });
-          this.$router.push({ path: "/blogs" });
-        })
-        .catch((response) => {
-          console.log(response);
-          this.setAlert({
-            status: true,
-            color: "error",
-            text: "Delete Gagal",
-          });
-        });
+      }
     },
     updateBlog() {
+
       this.setDialogComponent({
         component: "UpdateBlog",
-        params: "Update Blog",
+        params: {id:this.blog.id},
       });
     },
   },

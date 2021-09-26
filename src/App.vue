@@ -29,7 +29,7 @@
     <v-app-bar app color="teal darken-1" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title color="primary">
-        BLOG APP
+        BLOGGS
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
@@ -68,7 +68,7 @@
                   "
                 ></v-img>
               </v-avatar>
-              <h3 class="px-1">{{ user.name }}</h3>
+              <h3 class="px-1 mt-2">{{ user.name }}</h3>
               <p class="text-caption mt-1">
                 {{ user.email }}
               </p>
@@ -91,8 +91,24 @@
       </v-container>
     </v-main>
 
-    <v-footer app>
-      @Sanbercode | VueJS
+    <v-footer
+      dark
+      padless
+      app
+      inset
+    >
+    <v-card
+      class="flex"
+      flat
+      tile
+      color="teal darken-1"
+      :elevation="10"
+    >
+
+      <v-card-text class="py-2 white--text text-center">
+        {{ new Date().getFullYear() }} — <strong>BLOGGS</strong>
+      </v-card-text>
+    </v-card>
     </v-footer>
   </v-app>
 </template>
