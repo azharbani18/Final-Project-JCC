@@ -144,7 +144,7 @@ export default {
                         console.log(response.data)
                         this.setAlert({
                             status : true,
-                            color : 'success',
+                            color : 'teal darken-1',
                             text : 'Akun berhasil dibuat.',
                         })
                         this.close()

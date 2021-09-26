@@ -134,12 +134,13 @@ export default {
         };
         this.axios(config)
           .then(() => {
-            if (this.$refs.photo.files[0] != undefined) {
+            if (this.$refs.photo.files[0] != null) {
+              console.log(this.$refs.photo.files[0])
               this.uploadPhoto();
             }
             this.setAlert({
               status: true,
-              color: "success",
+              color: "teal darken-1",
               text: "Edit Berhasil",
             });
             this.setStatus(false);
@@ -173,7 +174,7 @@ export default {
         .then(() => {
           this.setAlert({
             status: true,
-            color: "success",
+            color: "teal darken-1",
             text: "Edit Berhasil",
           });
         })
