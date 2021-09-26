@@ -16,6 +16,8 @@
                             required
                             outlined
                             rounded
+                            :counter="30"
+                            :rules="nameRules"
                             append-icon="mdi-account"
                             max-width="200"
                         ></v-text-field>
@@ -35,6 +37,7 @@
                     required
                     outlined
                     rounded
+                    :rules="emailRules"
                     append-icon="mdi-email"
                 ></v-text-field>
                 <h4 class="ml-1 mb-3">Password</h4>
@@ -47,6 +50,7 @@
                     counter
                     outlined
                     rounded
+                    :rules="passwordRules"
                     @click:append="showPassword = !showPassword"
                 ></v-text-field>
                 <v-alert
@@ -67,7 +71,6 @@
                         @click="submit"
                     >
                     Register Now
-                    <!-- <v-icon right dark>mdi-register</v-icon> -->
                     </v-btn>
                 </div>
             </v-form>
@@ -84,6 +87,18 @@ export default {
             nama : '',
             email : '',
             password : '',
+            nameRules: [
+                v => !!v || 'Name is required',
+                v => (v && v.length <= 30) || 'Name must be less than 30 characters',
+            ],            
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
+            passwordRules: [
+                v => !!v || 'Password is required',
+                v => (v && v.length >= 8) || 'Password must be longer than 8 characters',
+            ],
             photoFile : '',
             showPassword : false,
             apiDomain: 'https://demo-api-vue.sanbercloud.com'
@@ -97,27 +112,8 @@ export default {
         validationForm() {
             this.errors = []
 
-            //Validate Nama
-            if(this.nama.length < 1) {
-                this.errors.push('Nama tidak boleh kosong!')
-            } else if (this.nama.length > 30) {
-                this.errors.push('Nama tidak boleh lebih dari 30 karakter!')
-            }
-
-            //Validate Email
-            if(this.email.length < 1) {
-                this.errors.push('Email tidak boleh kosong!')
-            } else if (this.email.length > 40) {
-                this.errors.push('Email tidak boleh lebih dari 40 karakter!')
-            } else if (!this.validEmail(this.email)) {
-                this.errors.push('Email tidak valid!');
-            }
-
-            //Validate Password
-            if(!this.password) {
-                this.errors.push('Password tidak boleh kosong!')
-            } else if (this.password.length < 8) {
-                this.errors.push('Password minimal 8 digit!')
+            if(!this.nama || !this.email || !this.password){
+                this.errors.push("data tidak valid")
             }
         },
         submit() {
@@ -163,11 +159,6 @@ export default {
                     })
                 }
 
-        },
-        validEmail: function (email) {
-        // eslint-disable-next-line no-useless-escape
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
         },
         close() {
             this.$emit('closed', false)

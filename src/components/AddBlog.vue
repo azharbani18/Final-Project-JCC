@@ -13,6 +13,8 @@
                     required
                     outlined
                     rounded
+                    :counter="30"
+                    :rules="titleRules"
                     append-icon="mdi-subtitles"
                 ></v-text-field>
 
@@ -24,20 +26,12 @@
                     name="input-7-4"
                     label="Deskripsi"
                     v-model="description"
+                    :counter="500"
+                    :rules="descriptionRules"
                     append-icon="mdi-subtitles"
                 ></v-textarea>
 
-                <v-alert
-                    v-if="errors.length > 0"
-                    border="right"
-                    type="error"
-                >
-                    <ul v-for="error of errors" :key="error">
-                        <li>{{error}}</li>
-                    </ul>
-                </v-alert>
-
-                <div class="text-center mb-5">
+                <div class="text-center mt-2 mb-5">
                     <v-btn 
                         color="teal darken-1"
                         dark
@@ -61,6 +55,14 @@ export default {
             errors : [],
             title : '',
             description : '',
+            titleRules: [
+                v => !!v || 'Title is required',
+                v => (v && v.length <= 30) || 'Title must be less than 30 characters',
+            ],
+            descriptionRules: [
+                v => !!v || 'Description is required',
+                v => (v && v.length <= 500) || 'Description must be less than 500 characters',
+            ],
             apiDomain: 'https://demo-api-vue.sanbercloud.com'
         }
     },
@@ -130,11 +132,6 @@ export default {
                     })
                 }
 
-        },
-        validEmail: function (email) {
-        // eslint-disable-next-line no-useless-escape
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
         },
         close() {
             this.$emit('closed', false)
