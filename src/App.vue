@@ -159,7 +159,7 @@ export default {
 
           this.setAlert({
             status: true,
-            color: "success",
+            color: "teal darken-1",
             text: "Anda berhasil logout",
           });
         })

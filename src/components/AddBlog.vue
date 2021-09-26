@@ -116,7 +116,7 @@ export default {
                         console.log(response.data)
                         this.setAlert({
                             status : true,
-                            color : 'success',
+                            color : 'teal darken-1',
                             text : 'Blog berhasil ditambahkan.',
                         })
                         this.close()

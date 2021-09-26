@@ -103,7 +103,7 @@ export default {
           .then(() => {
             this.setAlert({
               status: true,
-              color: "success",
+              color: "teal darken-1",
               text: "Delete Berhasil",
             });
             this.$router.push({ path: "/blogs" });
